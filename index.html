@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html, div {
+                margin: 0;
+            }
+
+            #container {
+                width: 640px;
+                margin: 0 auto;                
+            }
+            #message {
+                text-align: center;
+            }
+
+        </style>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js" crossorigin="anonymous"></script>
+    </head>
+<body>
+    <div id="container">
+        <h1 id="message"></h1>
+        <div id="creator">
+            <h3>Create message</h3>
+            <textarea id="new-message"></textarea>
+            <p id="encoded-message"></p>
+            <a id="new-url" href="#"></a>
+        </div>
+
+    </div>
+    <script>
+
+        const getMessage = () => {
+            const url = new URL(window.location.href)
+            return atob(url.searchParams.get("m"))
+        }
+
+        const buildUrl = (message) => {
+            return window.location.origin + "?m=" + message
+        }
+
+        (function(){
+            $("#message").text(getMessage())
+            const encodedMessage = $("#encoded-message")
+            const newUrl = $("#new-url")
+            $("#new-message").on("change keyup paste", (e) => {
+                const encoded = btoa(e.target.value)
+                const url = buildUrl(encoded)
+
+                encodedMessage.text(encoded)                
+                newUrl.text(url)
+                newUrl.attr("href", url)
+                });
+        })();
+
+    </script>
+</body>
+</html>
