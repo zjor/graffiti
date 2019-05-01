@@ -30,9 +30,26 @@
     </div>
     <script>
 
+        function b64EncodeUnicode(str) {
+            // first we use encodeURIComponent to get percent-encoded UTF-8,
+            // then we convert the percent encodings into raw bytes which
+            // can be fed into btoa.
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+                function toSolidBytes(match, p1) {
+                    return String.fromCharCode('0x' + p1);
+            }));
+        }
+
+        function b64DecodeUnicode(str) {
+            // Going backwards: from bytestream, to percent-encoding, to original string.
+            return decodeURIComponent(atob(str).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }  
+
         const getMessage = () => {
             const url = new URL(window.location.href)
-            return atob(url.searchParams.get("m"))
+            return b64DecodeUnicode(url.searchParams.get("m"))
         }
 
         const buildUrl = (message) => {
@@ -44,7 +61,7 @@
             const encodedMessage = $("#encoded-message")
             const newUrl = $("#new-url")
             $("#new-message").on("change keyup paste", (e) => {
-                const encoded = btoa(e.target.value)
+                const encoded = b64EncodeUnicode(e.target.value)
                 const url = buildUrl(encoded)
 
                 encodedMessage.text(encoded)                
