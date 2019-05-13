@@ -1,0 +1,19 @@
+html, body, .container {
+    height: 100%;
+}
+
+.valign-wrapper {
+    height: 100%;
+}
+
+div.center-align {
+    width: 100%;
+}
+
+pre.message {
+    font-size: 3em;
+}
+
+#message {    
+    width: 100%;
+}

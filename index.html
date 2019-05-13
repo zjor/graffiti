@@ -1,51 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            html, div {
-                margin: 0;
-            }
-
-            #container {
-                width: 640px;
-                margin: 0 auto;                
-            }
-            #message {
-                text-align: center;
-            }
-
-        </style>
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>        
+        <script src="https://code.jquery.com/jquery-3.4.0.min.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>   
     </head>
 <body>
-    <div id="container">
-        <h1 id="message"></h1>
-        <div id="creator">
-            <h3>Create message</h3>
-            <textarea id="new-message"></textarea>
-            <p id="encoded-message"></p>
-            <a id="new-url" href="#"></a>
+    <div class="container">
+        <div class="valign-wrapper">
+            <div class="center-align">
+                <pre id="message" class="message"></pre>
+            </div>
+        </div>
+
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large red" href="/new.html">
+                <i class="large material-icons">add</i>
+            </a>
         </div>
 
     </div>
-    <script>
-
-        function b64EncodeUnicode(str) {
-            // first we use encodeURIComponent to get percent-encoded UTF-8,
-            // then we convert the percent encodings into raw bytes which
-            // can be fed into btoa.
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-                function toSolidBytes(match, p1) {
-                    return String.fromCharCode('0x' + p1);
-            }));
-        }
-
-        function b64DecodeUnicode(str) {
-            // Going backwards: from bytestream, to percent-encoding, to original string.
-            return decodeURIComponent(atob(str).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-        }  
+    <script type="module">
+        import { b64DecodeUnicode } from './js/commons.js';
 
         const getMessage = () => {
             const url = new URL(window.location.href)
@@ -62,23 +41,9 @@
             }
         }
 
-        const buildUrl = (message) => {
-            return window.location.origin + "?m=" + message
-        }
-
-        (function(){
+        $(document).ready(() => {
             $("#message").text(getMessage())
-            const encodedMessage = $("#encoded-message")
-            const newUrl = $("#new-url")
-            $("#new-message").on("change keyup paste", (e) => {
-                const encoded = b64EncodeUnicode(e.target.value)
-                const url = buildUrl(encoded)
-
-                encodedMessage.text(encoded)                
-                newUrl.text(url)
-                newUrl.attr("href", url)
-                });
-        })();
+        })
 
     </script>
 </body>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>        
+        <script src="https://code.jquery.com/jquery-3.4.0.min.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>   
+    </head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col s6">
+                <h5>Editor</h5>
+                <div class="row">
+                    <form class="col s10">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="message-input" class="materialize-textarea"></textarea>
+                                <label for="message">Message</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 center-align">
+                                <a class="waves-effect waves-teal btn" id="cancel">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col s6">
+                <h5>Preview</h5>
+                <div class="valign-wrapper">
+                    <div class="center-align">
+                        <pre id="message-preview" class="message"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center-align">
+                <a href="#" id="message-url"></a>
+            </div>
+        </div>        
+    </div>
+    <script type="module">
+
+        import {b64EncodeUnicode} from './js/commons.js'
+
+        const buildUrl = (message) => {
+            return window.location.origin + "?m=" + message
+        }
+
+        $(document).ready(() => {
+            const messagePreview = $('#message-preview')
+            const messageUrl = $('#message-url')
+
+            $("#message-input").on('change keyup paste', (e) => {
+                const text = e.target.value
+                messagePreview.text(text)
+
+                const encoded = b64EncodeUnicode(text)
+                const url = buildUrl(encoded)                
+                messageUrl.text(url)
+                messageUrl.attr("href", url)
+            })
+
+            $('#cancel').click(() => {
+                history.go(-1)
+            })
+        })
+
+    </script>
+</body>
+</html>
