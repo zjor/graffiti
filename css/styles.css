@@ -51,6 +51,10 @@ pre.message {
     vertical-align: middle;
 }
 
+.tab-pane {
+    padding: 8px;
+}
+
 #message {    
     width: 100%;
 }

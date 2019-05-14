@@ -1,48 +1,60 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/styles.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>        
-        <script src="https://code.jquery.com/jquery-3.4.0.min.js" crossorigin="anonymous"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>   
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="./js/bootstrap.min.js"></script>
     </head>
 <body>
     <div class="container">
+        <nav class="navbar"></nav>
         <div class="row">
-            <div class="col s6">
+            <div class="col-sm">
                 <h5>Editor</h5>
-                <div class="row">
-                    <form class="col s10">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <textarea id="message-input" class="materialize-textarea"></textarea>
-                                <label for="message">Message</label>
-                            </div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">Text & Image</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="md-tab" data-toggle="tab" href="#md" role="tab" aria-controls="md" aria-selected="false">Markdown</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane show active" id="text" role="tabpanel" aria-labelledby="text-tab">                        
+                        <div class="form-group">
+                            <label for="message-input">Message</label>
+                            <textarea class="form-control" id="message-input" rows="3"></textarea>
                         </div>
-                        <div class="row">
-                            <div class="col s12 center-align">
-                                <a class="waves-effect waves-teal btn" id="cancel">Back</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col s6">
-                <h5>Preview</h5>
-                <div class="valign-wrapper">
-                    <div class="center-align">
-                        <pre id="message-preview" class="message"></pre>
+                        <div class="form-group">
+                            <label for="image-url">Image URL (Optional)</label>
+                            <input type="text" class="form-control" id="image-url">
+                        </div>                        
+                    </div>
+                    <div class="tab-pane" id="md" role="tabpanel" aria-labelledby="md-tab">
+                        Under construction
                     </div>
                 </div>
             </div>
+            <div class="col-sm">
+                <h5>Preview</h5>
+                <pre id="message-preview" class="message"></pre>
+            </div>            
         </div>
         <div class="row">
-            <div class="col s12 center-align">
+            <div class="col-sm text-center">
                 <a href="#" id="message-url"></a>
-            </div>
-        </div>        
+            </div>        
+        </div>
+       
     </div>
     <script type="module">
 
@@ -69,6 +81,12 @@
             $('#cancel').click(() => {
                 history.go(-1)
             })
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+              console.log(`Activated ${e.target}`)
+              console.log(`Hidden ${e.relatedTarget}`)                
+            })
+
         })
 
     </script>
