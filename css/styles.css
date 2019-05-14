@@ -10,8 +10,45 @@ div.center-align {
     width: 100%;
 }
 
+.vertical-center {
+    height: 100%;
+    min-height: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+}
+
 pre.message {
+    text-align: center;    
     font-size: 3em;
+}
+
+.fab {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 48px;
+    margin-bottom: 48px;
+}
+
+.badge-circle {
+    width: 48px;
+    height: 48px;
+    line-height: 48px; /* adjust line height to align vertically */
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    display: block;
+    color: white;
+    background-color: chartreuse;
+    text-align: center;
+}
+
+.badge-circle span {
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
 }
 
 #message {    
