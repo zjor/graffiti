@@ -55,6 +55,14 @@ pre.message {
     padding: 8px;
 }
 
+.image {
+    margin-bottom: 48px;
+}
+
+.center {
+    text-align: center;
+}
+
 #message {    
     width: 100%;
 }

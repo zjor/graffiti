@@ -46,7 +46,9 @@
             </div>
             <div class="col-sm">
                 <h5>Preview</h5>
-                <pre id="message-preview" class="message"></pre>
+                <div id="preview-container">
+                    <pre id="message-preview" class="message"></pre>
+                </div>                
             </div>            
         </div>
         <div class="row">
@@ -58,33 +60,63 @@
     </div>
     <script type="module">
 
-        import {b64EncodeUnicode} from './js/commons.js'
+        import {encodeText, encodeImageAndText, decodeState, getMessageElement} from './js/commons.js'
 
         const buildUrl = (message) => {
             return window.location.origin + "?m=" + message
         }
+    
+        const render = (state, container) => {
+            const el = getMessageElement(state)
+            container.empty()
+            container.append(el)            
+        }
+
+        const encodeState = (state) => {
+            if (state.imageUrl === undefined) {
+                return encodeText(state.text)
+            } else {
+                return encodeImageAndText(state.text, state.imageUrl)
+            }
+        }
+
+        const updateEncodedUrl = (state, activeTab, element) => {
+            const encoded = encodeState(state)
+            const url = buildUrl(encoded)    
+            element.text(url)
+            element.attr("href", url)
+            return encoded
+        }        
 
         $(document).ready(() => {
             const messagePreview = $('#message-preview')
             const messageUrl = $('#message-url')
+            const previewContainer = $('#preview-container')
+
+            const state = {
+                text: undefined, 
+                imageUrl: undefined,
+                markdown: undefined
+            }
+
+            let activeTab = 'text'
 
             $("#message-input").on('change keyup paste', (e) => {
-                const text = e.target.value
-                messagePreview.text(text)
-
-                const encoded = b64EncodeUnicode(text)
-                const url = buildUrl(encoded)                
-                messageUrl.text(url)
-                messageUrl.attr("href", url)
+                state.text = e.target.value                
+                const encoded = updateEncodedUrl(state, activeTab, messageUrl)
+                render(decodeState(encoded), previewContainer)
             })
 
-            $('#cancel').click(() => {
-                history.go(-1)
+            $('#image-url').on('change keyup paste', (e) => {
+                state.imageUrl = e.target.value                
+                const encoded = updateEncodedUrl(state, activeTab, messageUrl)
+                render(decodeState(encoded), previewContainer)
             })
 
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-              console.log(`Activated ${e.target}`)
-              console.log(`Hidden ${e.relatedTarget}`)                
+                const tabUrl = e.target.toString()
+                activeTab = tabUrl.substring(tabUrl.lastIndexOf('#') + 1)
+                console.log(`Active tab: ${activeTab}`)
             })
 
         })

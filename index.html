@@ -17,7 +17,7 @@
 <body>
     <div class="container">
         <div class="row vertical-center">
-            <div class="col">
+            <div class="col" id="message-container">
                 <pre id="message" class="message"></pre>
             </div>
         </div>
@@ -30,25 +30,28 @@
 
     </div>
     <script type="module">
-        import { b64DecodeUnicode } from './js/commons.js';
-
-        const getMessage = () => {
+        import { decodeState, getMessageElement } from './js/commons.js';
+        
+        const render = (container) => {
             const url = new URL(window.location.href)
             const encoded = url.searchParams.get("m")
             if (encoded === undefined) {
-                return "Empty message"
+                container.text('Empty message')
             } else {
                 try {
-                    return b64DecodeUnicode(encoded)
+                    const el = getMessageElement(decodeState(encoded))
+                    container.empty()
+                    container.append(el)
                 } catch (err) {
                     console.log(err)
-                    return "Please enter a message"
+                    container.text('Empty message')
                 }
             }
         }
 
         $(document).ready(() => {
-            $("#message").text(getMessage())
+            const messageContainer = $('#message-container')
+            render(messageContainer)
         })
 
     </script>
