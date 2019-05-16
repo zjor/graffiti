@@ -6,7 +6,7 @@
         <meta property="og:title" content="Graffiti" />
         <meta property="og:description" content="Share a message encoded purely in the URL" />
 
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="./css/styles.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
         <!-- Bootstrap CSS -->
@@ -70,7 +70,8 @@
         import {encodeText, encodeImageAndText, decodeState, getMessageElement} from './js/commons.js'
 
         const buildUrl = (message) => {
-            return window.location.origin + "?m=" + message
+            const contextPath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1)
+            return contextPath + "?m=" + message
         }
     
         const render = (state, container) => {
