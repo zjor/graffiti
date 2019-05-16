@@ -46,7 +46,9 @@ export const getMessageElement = (state) => {
     const textElement = $('<pre/>').addClass('message').text(state.text)
     if (state.markdown !== undefined) {
         const converter = new showdown.Converter()
-        return converter.makeHtml(state.markdown)
+        const div = $('<div/>')
+        div.append(converter.makeHtml(state.markdown))
+        return div
     } else if (state.imageUrl !== undefined) {
         const div = $('<div/>').addClass('center')
         const img = $('<img/>').addClass('image').attr('src', state.imageUrl)

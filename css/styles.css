@@ -63,6 +63,8 @@ pre.message {
     text-align: center;
 }
 
-#message {    
-    width: 100%;
+#message-container {    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
