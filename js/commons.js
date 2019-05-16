@@ -15,8 +15,8 @@ export const b64DecodeUnicode = (str) => {
     }).join(''));
 }
 
-export const encodeText = (text) => {
-    return b64EncodeUnicode('t' + text)
+export const encodeText = (text, prefix = 't') => {
+    return b64EncodeUnicode(`${prefix}${text}`)
 }
 
 export const encodeImageAndText = (text, imageUrl) => {
@@ -36,13 +36,18 @@ export const decodeState = (code) => {
         const obj = JSON.parse(decoded.substring(1))
         state.text = obj.t
         state.imageUrl = obj.i
+    } else if (decoded[0] == 'm') {
+        state.markdown = decoded.substring(1)
     }
     return state
 }
 
 export const getMessageElement = (state) => {
     const textElement = $('<pre/>').addClass('message').text(state.text)
-    if (state.imageUrl !== undefined) {
+    if (state.markdown !== undefined) {
+        const converter = new showdown.Converter()
+        return converter.makeHtml(state.markdown)
+    } else if (state.imageUrl !== undefined) {
         const div = $('<div/>').addClass('center')
         const img = $('<img/>').addClass('image').attr('src', state.imageUrl)
         div.append(img)
