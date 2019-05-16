@@ -70,7 +70,8 @@
         import {encodeText, encodeImageAndText, decodeState, getMessageElement} from './js/commons.js'
 
         const buildUrl = (message) => {
-            const contextPath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1)
+            const href = window.location.href
+            const contextPath = href.substring(0, href.lastIndexOf('/') + 1)
             return contextPath + "?m=" + message
         }
     
